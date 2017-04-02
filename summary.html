@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html><head>
+<title>Market Summary</title>
+  <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+  <meta http-equiv="Refresh" content="240; URL=summary.html">
+
+  <script type="text/javascript">
+
+var baseUrl = "http://bigcharts.marketwatch.com/kaavio.Webhost/charts/big.chart?type=64&size=1&style=340&freq=9&time=2&ma=1&maval=400&symb=";
+var chartBaseUrl = "http://bigcharts.marketwatch.com/kaavio.Webhost/charts/big.chart?ma=2&maval=8,50&uf=0&lf=268435456&lf2=4&lf3=2&type=4&size=4&state=11&style=340&freq=1&time=7&mocktick=1&symb="
+
+function buildImageUrl(symbol)
+{
+  document.getElementById(symbol).src = baseUrl + symbol;
+  document.getElementById(symbol + '_a').href = chartBaseUrl + symbol;
+}
+
+function load()
+{
+  buildImageUrl('GCM7');
+  buildImageUrl('silver');
+  buildImageUrl('crude+oil');
+  buildImageUrl('dxy');
+  buildImageUrl('uso');
+  buildImageUrl('gdx');
+  buildImageUrl('soxx');
+  buildImageUrl('usdcad');
+  buildImageUrl('ndx');
+  buildImageUrl('indu');
+  buildImageUrl('spx');
+  buildImageUrl('iwm');
+  
+  buildImageUrl('xbi');
+  buildImageUrl('xop');
+  buildImageUrl('jnug');
+  buildImageUrl('slv');
+  
+  buildImageUrl('vix');
+  buildImageUrl('natural+gas');
+}
+
+</script>
+
+</head>
+
+<body bgcolor="white" onload="load()">
+<table cellpadding="5" border="0" width="100%" align="center">
+    <tr>
+      <!-- <td valign="top" align="center"><img src="http://kitconet.com/charts/metals/gold/t24_au_en_usoz_4.gif"></td> -->
+      <!-- <td valign="top" align="center"><img src="http://kitconet.com/charts/metals/silver/t24_ag_en_usoz_4.gif"></td> -->
+	  <td valign="top" align="center"><a id='GCM7_a'><img id='GCM7'></a></td>
+	  <td valign="top" align="center"><a id='silver_a'><img id='silver'></a></td>
+	  <td valign="top" align="center"><a id='crude+oil_a'><img id='crude+oil'></a></td>
+	  <td valign="top" align="center"><a id='dxy_a'><img id='dxy'></a></td>
+	</tr>
+    <tr>
+      <td valign="top" align="center"><a id='uso_a'><img id="uso"></a></td>
+      <td valign="top" align="center"><a id='gdx_a'><img id="gdx"></a></td>
+      <td valign="top" align="center"><a id='soxx_a'><img id="soxx"></a></td>
+      <td valign="top" align="center"><a id='usdcad_a'><img id="usdcad"></a></td>
+    </tr>
+    <tr>
+	  <td valign="top" align="center"><a id='ndx_a'><img id="ndx"></a></td>
+      <td valign="top" align="center"><a id='indu_a'><img id="indu"></a></td>
+      <td valign="top" align="center"><a id='spx_a'><img id="spx"></a></td>
+	  <td valign="top" align="center"><a id='iwm_a'><img id="iwm"></a></td>
+    </tr>
+    <tr>
+      <td valign="top" align="center"><a id='xbi_a'><img id="xbi"></a></td>
+      <td valign="top" align="center"><a id='xop_a'><img id="xop"></a></td>
+      <td valign="top" align="center"><a id='jnug_a'><img id="jnug"></a></td>
+      <td valign="top" align="center"><a id='slv_a'><img id="slv"></a></td>
+    </tr>
+    <tr>
+	    <td valign="top" align="center"><a id='vix_a'><img id="vix"></a></td>
+        <td valign="top" align="center"><a id='natural+gas_a'><img id="natural+gas"></a></td>
+        <td valign="top" align="center">
+            <iframe frameborder="0" scrolling="no" height="192" width="450" allowtransparency="true" marginwidth="0" marginheight="0" src="http://comrates.investing.com/index.php?force_lang=1&pairs_ids=8831;8849;8830;8862;8883;8910;8836;&header-text-color=%23FFFFFF&curr-name-color=%230059b0&inner-text-color=%23000000&green-text-color=%232A8215&green-background=%23B7F4C2&red-text-color=%23DC0001&red-background=%23FFE2E2&inner-border-color=%23CBCBCB&border-color=%23cbcbcb&bg1=%23F6F6F6&bg2=%23ffffff&open=hide&month=hide&last_update=hide"></iframe>
+        </td>
+        <td valign="top" align="center">
+            <iframe src="http://ec.forexprostools.com?columns=exc_flags,exc_importance,exc_actual,exc_forecast&category=_employment,_economicActivity,_inflation,_credit,_centralBanks,_confidenceIndex,_balance,_Bonds&importance=2,3&features=timeselector&countries=5&calType=day&timeZone=55&lang=1" width="450" height="467" frameborder="0" allowtransparency="true" marginwidth="0" marginheight="0"></iframe><div class="poweredBy" style="font-family: Arial, Helvetica, sans-serif;"><span style="font-size: 11px;color: #333333;text-decoration: none;">
+        </td>
+    </tr>
+	
+</table>
+</body></html>

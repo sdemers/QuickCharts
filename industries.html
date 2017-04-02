@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<HTML>
+<HEAD>
+<title>Dow Jones Industries</title>
+<LINK rel=STYLESHEET href="myss.css" type="text/css">
+
+<SCRIPT type="text/javascript">
+
+var globIndustries = "171574,Exploration & Production,171573,Integrated Oil & Gas,980704,Oil Equipment & Services,171581,Pipelines," +
+                     "171506,Commodity Chemicals,171508,Specialty Chemicals,171538,Forestry & Paper,171536,Forestry,171578,Paper," +
+                     "171496,Aluminum,171575,Nonferrous Metals,171600,Steel,171512,Coal,171568,General Mining,171580,Gold Mining," +
+                     "171500,Building Materials & Fixtures,171513,Heavy Construction,171518,Containers & Packaging,171551,Diversified Industrials," +
+                     "171526,Electrical Components & Equipment,171559,Electronic Equipment,980702,Industrial Engineering," +
+                     "171562,Commercial Vehicles & Trucks,171531,Industrial Machinery,171608,Industrial Transportation,171494,Delivery Services," +
+                     "171563,Marine Transportation,171585,Railroads,1087538,Transportation Services,171609,Trucking,171601,Support Services," +
+                     "171550,Business Support Services,171583,Waste & Disposal Services,171499,Automobiles,171498,Auto Parts,171604,Tires," +
+                     "980700,Beverages,171524,Brewers,171597,Soft Drinks,980701,Food Producers,171535,Food Products,171548,Durable Household Products," +
+                     "171549,Nondurable Household Products,171539,Furnishings,171546,Home Construction,213811,Consumer Electronics," +
+                     "171587,Recreational Products,171606,Toys,171509,Clothing & Accessories,171537,Footwear,171514,Personal Products,171607,Tobacco," +
+                     "171543,Health Care Providers,171565,Medical Equipment,171564,Medical Supplies,171504,Biotechnology,171522,Pharmaceuticals," +
+                     "171590,Drug Retailers,171532,Food Retailers & Wholesalers,171593,Apparel Retailers,171589,Broadline Retailers," +
+                     "171517,Specialized Consumer Services,171577,Specialty Retailers,171502,Broadcasting & Entertainment,171493,Media Agencies," +
+                     "171584,Publishing,171495,Airlines,171511,Gambling,171561,Hotels,171588,Restaurants & bars,171541,Gas Distribution," +
+                     "171613,Water,171555,Full Line Insurance,171557,Property & Casualty Insurance,171556,Life Insurance,171594,Investment Services," +
+                     "980707,Computer Services,980703,Internet,171599,Software,171515,Computer Hardware,171572,Electronic Office Equipment," +
+                     "171595,Semiconductors,171510,Telecommunications Equipment,";
+
+function loadIndustries() {
+
+    var lastIndex = 0;
+    var index = globIndustries.indexOf(',');
+    var sid;
+    var name;
+
+    while (index != -1)
+    {
+        sid = globIndustries.substring(lastIndex, index);
+        lastIndex = index + 1;
+        index = globIndustries.indexOf(',', lastIndex);
+
+        name = globIndustries.substring(lastIndex, index);
+        lastIndex = index + 1;
+        index = globIndustries.indexOf(',', lastIndex);
+
+        if (index != -1)
+        {
+            document.writeln('<div class="industry">');
+            document.writeln('<h1>' + name + '</h1><br>');
+            //document.writeln('<a href="http://bigcharts.marketwatch.com/industry/bigcharts-com/focus.asp?' +
+            //                 'bcind_sid=' + sid + '&bcind_period=3mo" target="_blank">');
+            document.writeln('<img border=0 src="http://chart.bigcharts.com/bc3/quickchart/chart.asp?ma=1' +
+                             '&maval=30,50,7,150&uf=0&lf=2&type=2&size=3&style=340&time=6mo&freq=1&mocktick=1' +
+                             '&sid=' + sid + '"/>');
+            //document.writeln('</a>');
+            document.writeln('</div><br>');
+        }
+    }
+
+    document.writeln('<div class="industry">');
+    document.writeln('<h1>' + name + '</h1><br>');
+    document.writeln('<img border=0 src="http://chart.bigcharts.com/bc3/quickchart/chart.asp?ma=1' +
+                     '&maval=30,50,7,150&uf=0&lf=2&type=2&size=3&style=340&time=6mo&freq=1&mocktick=1&sid=' + sid + '"/>');
+    document.writeln('</div>');
+}
+
+</SCRIPT>
+
+</HEAD>
+
+<body>
+    <div id="industries">
+        <script language="Javascript">
+        <!--
+            loadIndustries();
+        //-->
+        </script>
+    </div>
+
+</body>
+</html>
