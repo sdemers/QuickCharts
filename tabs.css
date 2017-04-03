@@ -4,5 +4,5 @@
       ul#tabs li a { color: #42454a; background-color: #dedbde; border: 1px solid #c9c3ba; border-bottom: none; padding: 0.3em 30px 0.3em 30px; text-decoration: none; }
       ul#tabs li a:hover { background-color: #f1f0ee; }
       ul#tabs li a.selected { color: #000; background-color: #f1f0ee; padding: 0.3em 30px 0.3em 30px; }
-      div.tabContent { border: 1px solid #c9c3ba; padding: 0.5em; background-color: #f1f0ee; }
+      div.tabContent { border: 1px solid #c9c3ba; padding: 2px; background-color: #f1f0ee; }
       div.tabContent.hide { display: none; }
