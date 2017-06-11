@@ -9,33 +9,33 @@
 
 <script type="text/javascript">
 
-// Gold:   symbol: GOLD, &sid=5486039
-// Silver: symbol: SILVER &sid=12067546
-
 var bigChartsServer = "http://bigcharts.marketwatch.com/kaavio.Webhost/charts/big.chart?";
 var showVolumeByPrice = 0;
 var upperIndicatorTag = "&uf=";
 var bollingerValue = 8;
 var volumeByPriceValue = 32;
 var noUpperIndicator = 0;
+var intradayImageBase = "http://bigcharts.marketwatch.com/kaavio.Webhost/charts/big.chart?type=256&size=1&style=340&freq=9&time=1&ma=1&maval=400&symb=";
 
 var chartDictionary = {};
-chartDictionary['min15'] = "http://bigcharts.marketwatch.com/kaavio.Webhost/charts/big.chart?ma=2&maval=8,50&lf=268435456&lf2=4&lf3=2&type=4&size=4&state=11&style=340&freq=7&time=18&mocktick=1&symb=";
-chartDictionary['min5'] = "http://bigcharts.marketwatch.com/kaavio.Webhost/charts/big.chart?ma=2&maval=200&lf=268435456&lf2=4&lf3=2&type=4&size=4&state=11&style=340&freq=6&time=18&mocktick=1&symb=";
-chartDictionary['daily_1y'] = "http://bigcharts.marketwatch.com/kaavio.Webhost/charts/big.chart?ma=2&maval=8,50&lf=268435456&lf2=4&lf3=2&type=4&size=4&state=11&style=340&freq=1&time=8&mocktick=1&symb=";
-chartDictionary['daily_6mo'] = "http://bigcharts.marketwatch.com/kaavio.Webhost/charts/big.chart?ma=2&maval=8,50&lf=268435456&lf2=4&lf3=2&type=4&size=4&state=11&style=340&freq=1&time=7&mocktick=1&symb=";
+chartDictionary['min15'] = "http://bigcharts.marketwatch.com/kaavio.Webhost/charts/big.chart?ma=1&maval=5,50&lf=268435456&lf2=4&lf3=2&type=4&size=4&state=11&style=340&freq=7&time=18&mocktick=1&symb=";
+chartDictionary['min5'] = "http://bigcharts.marketwatch.com/kaavio.Webhost/charts/big.chart?ma=1&maval=200&lf=268435456&lf2=4&lf3=2&type=4&size=4&state=11&style=340&freq=6&time=18&mocktick=1&symb=";
+chartDictionary['daily_1y'] = "http://bigcharts.marketwatch.com/kaavio.Webhost/charts/big.chart?ma=1&maval=5,50&lf=268435456&lf2=4&lf3=2&type=4&size=4&state=11&style=340&freq=1&time=8&mocktick=1&symb=";
+chartDictionary['daily_6mo'] = "http://bigcharts.marketwatch.com/kaavio.Webhost/charts/big.chart?ma=1&maval=5,50&lf=268435456&lf2=4&lf3=2&type=4&size=4&state=11&style=340&freq=1&time=7&mocktick=1&symb=";
+chartDictionary['weekly_3y'] = "http://bigcharts.marketwatch.com/kaavio.Webhost/charts/big.chart?ma=1&maval=5,50&lf=268435456&lf2=4&lf3=2&type=4&size=4&state=11&style=340&freq=2&time=9&mocktick=1&symb=";
 chartDictionary['green_line'] = "http://bigcharts.marketwatch.com/kaavio.Webhost/charts/big.chart?nosettings=1&type=4&size=4&style=340&freq=1&time=7&ma=1&maval=250&lf=32&lf2=268435456&lf3=0&mocktick=1&symb=";
 
 var globChartStyle = "&lf=268435456&lf2=4&lf3=2&type=4&size=4&state=11&style=340";
 var lastSymbol = "SPX";
 var lastCountry = "";
 
-var goldSid = "19278538";
-var goldYahoo = "GCJ17.CMX";
+var goldSid = "12067146";
+var goldSymbol = "GCQ7"
+var goldYahoo = "GCQ17.CMX";
 
 function resetValues()
 {
-    window.document.form.ma.value              = "8,50";
+    window.document.form.ma.value              = "5,50";
     //window.document.calcShares.calcComm.value = "10";
     //window.document.calcProfit.calcComm.value = "10";
 }
@@ -75,9 +75,12 @@ function changeYahoo(symbol)
 		yahooSymbol += '.to';
 	}
     
-    var yahooImage = "https://chart.finance.yahoo.com/t?s=" + yahooSymbol + "&lang=en-CA&region=CA&width=220&height=200";
-	changeImage(document.getElementById('yahooImage'), yahooImage);
+    //var yahooImage = "https://chart.finance.yahoo.com/t?s=" + yahooSymbol + "&lang=en-CA&region=CA&width=220&height=200";
+    //var yahooImage = "http://bigcharts.marketwatch.com/kaavio.Webhost/charts/big.chart?type=64&size=1&style=340&freq=9&time=1&ma=1&maval=400&symb=" + symbol;
+    var yahooImage = intradayImageBase + symbol;
     
+	changeImage(document.getElementById('yahooImage'), yahooImage);
+
 	var URL = 'http://finance.yahoo.com/quote/' + yahooSymbol;
 	document.getElementById('yahooLink').href = URL;
 }
@@ -105,7 +108,7 @@ function quickSubmit(period, timeframe, MA, mastyle)
 
     if (lastSymbol == "GOLD SPOT")
     {
-        symbol = "symb=gold&uf=0&sid=" + goldSid;
+        symbol = "symb=" + goldSymbol;
     }
     else if (lastSymbol == "SILVER SPOT")
     {
@@ -205,14 +208,14 @@ function writeChart(url)
 		{ bc:"comp", yh:"^IXIC" },
 		{ bc:"nasdaq", yh:"^IXIC" },
 		{ bc:"gold spot", yh:goldYahoo },
-        { bc:"silver spot", yh:"slv" },
+    { bc:"silver spot", yh:"slv" },
 		{ bc:"nat gas", yh:"ung" },
 		{ bc:"crude oil", yh:"uso" },
 		{ bc:"vix", yh:"^vix" },
 		{ bc:"$indu", yh:"^DJI" },
 		{ bc:"usdcad", yh:"CAD=X"},
 		{ bc:"usdjpy", yh:"JPY=X"},
-        { bc:"eurusd", yh:"EUR=X"},
+    { bc:"eurusd", yh:"EUR=X"},
 		{ bc:"crb", yh:"DBC"},
 		{ bc:"djt", yh:"^DJT"},
 		{ bc:"copper", yh:"^SPGSIC"},		
@@ -229,7 +232,9 @@ function writeChart(url)
 		}
 	}
     
-	var yahooUrl = "https://chart.finance.yahoo.com/t?s=" + yahooSymbol + "&lang=en-CA&region=CA&width=220&height=200";
+	//var yahooUrl = "https://chart.finance.yahoo.com/t?s=" + yahooSymbol + "&lang=en-CA&region=CA&width=220&height=200";
+    //var yahooUrl = "http://bigcharts.marketwatch.com/kaavio.Webhost/charts/big.chart?type=64&size=1&style=340&freq=9&time=1&ma=1&maval=400&symb=" + lastCountry + lastSymbol;
+    var yahooUrl = intradayImageBase + lastCountry + lastSymbol;
 	
 	if (lowerSymbol == 'dxy')
 	{
@@ -256,7 +261,7 @@ function writeChart(url)
 		yahooUrl = "http://www.kitconet.com/charts/metals/platinum/t24_pt_en_usoz_2.gif";
 	}
 
-    changeImage(document.getElementById('yahooImage'), yahooUrl);
+  changeImage(document.getElementById('yahooImage'), yahooUrl);
 	
 	var URL = 'http://finance.yahoo.com/quote/' + yahooSymbol;
 	document.getElementById('yahooLink').href = URL;
@@ -355,8 +360,8 @@ function adjustTimeframe(newPeriod, currentTimeframe)
                           clearField(window.document.form.symbolUS);'>
 
                     <script type="text/javascript">
-                     var symbolList = 'BBD.B,AC,AGF.B,AIM,AZ,BCB,BKX,BTE,BTO,CET,CIA,CFW,CGT,CMMC,CRH,DDC,DGC,DRT,DOL,ECS,EFR,ELD,ERF,ESP,EXN,FM,FR,FVI,G,GIB.A,' +
-                                      'GSC,GZM.UN,HBM,HED,HVI,HVU,HSU,HQU,HNU,HOU,HXU,IFP,IMG,ISPTX,IVN,K,MX,NCU,' +
+                     var symbolList = 'BBD.B,AC,AGF.B,AIM,ARG,AZ,BCB,BKX,BTE,BTO,CET,CIA,CFW,CGT,CMMC,CRH,DDC,DGC,DRT,DOL,ECS,EFR,ELD,ERF,ESP,EXN,FM,FR,FVI,G,GIB.A,' +
+                                      'GSC,GZM.UN,HBM,HED,HVI,HVU,HSU,HQU,HNU,HOU,HXU,HMMJ,IFP,IMG,ISPTX,IVN,K,MOGO,MX,NCU,' +
                                       'NSU,OTEX,PAAS,PHX.UN,PLI,PTM,RUS,RNW,S,SW,SCC,TCW,TECK.B,TET,UR,WEED,WIN,WJA,XGD,XRE,YGR,ZJG,ZLU';
                         generateSel(symbolList);
                     </script>
@@ -389,10 +394,10 @@ function adjustTimeframe(newPeriod, currentTimeframe)
 
                     <script type="text/javascript">
                         var symbolList = 'SPX,COMP,$INDU,SPY,DXY,USDCAD,USDJPY,EURUSD,IWM,HUI,CRUDE OIL,COPPER,GOLD SPOT,SILVER SPOT,NAT GAS,' +
-                                         'GLD,NUGT,DUST,JNUG,JDST,PLATINUM,USO,' +
+                                         'BTCUSD,GLD,NUGT,DUST,JNUG,JDST,PALLADIUM,PLATINUM,USO,' +
                                          'UNG,UGAZ,BRZU,CRB,DJT,AAPL,ABC,ALX,AMD,AMZN,CARA,CSCO,CHK,DXPE,' +
                                          'EBAY,EROS,FCX,GOOG,GST,INTC,XBI,LABD,LABU,TLRD,MCD,MSFT,NTES,SOX,SOXL,' +
-                                         'NVDA,REN,SGY,SPXL,SPXS,TDW,TOO,TSLA,URA,URRE,UVXY,SVXY,VIX,WMT,YHOO';
+                                         'NVDA,REN,SPXL,SPXS,TSLA,URA,URRE,UVXY,SVXY,VIX,WMT,YHOO';
                         generateSel(symbolList);
                     </script>
                 </select>
@@ -426,12 +431,12 @@ function adjustTimeframe(newPeriod, currentTimeframe)
                 <input style="font-size:12px;height:14px;" NAME="ma" TYPE="text" SIZE="10" maxlength="15" />
             </div>
             <div id="mastyle">
-                <input type="radio" name="mastyle" value="1"
+                <input type="radio" name="mastyle" value="1" checked
                        onChange='quickSubmit(window.document.form.period.value,
                                              window.document.form.timeframe.value,
                                              window.document.form.ma.value,
                                              window.document.form.mastyle.value);'>SMA
-                <input type="radio" name="mastyle" value="2" checked
+                <input type="radio" name="mastyle" value="2"
                        onChange='quickSubmit(window.document.form.period.value,
                                              window.document.form.timeframe.value,
                                              window.document.form.ma.value,
@@ -475,6 +480,7 @@ function adjustTimeframe(newPeriod, currentTimeframe)
 			<p>
 				<input type="submit" value="6M" onClick='submitPredefined("daily_6mo");' />
 				<input type="submit" value="1Y" onClick='submitPredefined("daily_1y");' />
+                <input type="submit" value="W" onClick='submitPredefined("weekly_3y");' />
 				<input type="submit" value="15" onClick='submitPredefined("min15");' />
 				<input type="submit" value="AGL" onClick='submitPredefined("green_line");' />
 			</p>
@@ -483,102 +489,19 @@ function adjustTimeframe(newPeriod, currentTimeframe)
 
         <div class="links">
             <h1><a href="summary.html" target="_blank">Market summary</a></h1>
-            <h1><a href="interactive.html" target="_blank">Interactive charts</a></h1>
+            <h1><a href="https://www.tradingview.com/chart/" target="_blank">Trading View</a></h1>
             <h1><a href="http://www.bigcharts.com" target="_blank">Bigcharts</a></h1>
             <h1><a href="http://www.stockcharts.com" target="_blank">Stockcharts</a></h1>
             <h1><a href="http://ca.finance.yahoo.com" target="_blank">Yahoo!</a></h1>
+            <h1><a href="https://finance.yahoo.com/portfolio/mfap_6f3dc2cd6b454b9f83dc7aa9dea2d0d5/view/v1?bypass=true" target="_blank">Watchlist</a></h1>
         </div>
-
-        <div class="yahooChart" background-color:white>
-            <a href="#" id="yahooLink" target=_blank><img id="yahooImage" src="blank.gif" alt="" style="background-color:white"/></a>
-        </div>
-
-        <!--
-        <div class="subsection">
-            <div class="submenu">
-                <h2>Shares calculator</h2>
-            </div>
-            <div class="calcMain">
-                <form name="calcShares"
-                    onSubmit='window.document.calcShares.calcQty.value =
-                              calcQuantity(window.document.calcShares.calcCash.value,
-                                           window.document.calcShares.calcComm.value,
-                                           window.document.calcShares.calcPrice.value); return false'>
-
-                    <div class="calcDesc">Amount $</div>
-                    <div class="calcField">
-                        <input STYLE="font-size:12px;height:14px;" NAME="calcCash" TYPE="text" SIZE="8" maxlength="20" />
-                    </div>
-                    <div class="calcDesc">Commission</div>
-                    <div class="calcField">
-                        <input STYLE="font-size:12px;height:14px;" NAME="calcComm" TYPE="text" SIZE="8" maxlength="20" />
-                    </div>
-                    <div class="calcDesc">Price / Share</div>
-                    <div class="calcField">
-                        <input STYLE="font-size:12px;height:14px;" NAME="calcPrice" TYPE="text" SIZE="8" maxlength="20" />
-                    </div>
-                    <div class="calcDesc"><b>Shares</b></div>
-                    <div class="calcField">
-                        <input STYLE="font-size:12px;height:14px;" NAME="calcQty" TYPE="text" SIZE="8" maxlength="20" />
-                    </div>
-                    <div class="padding_top">
-                        <input type="submit" value="  OK  "
-                         onClick='window.document.calcShares.calcQty.value =
-                                 calcQuantity(window.document.calcShares.calcCash.value,
-                                              window.document.calcShares.calcComm.value,
-                                              window.document.calcShares.calcPrice.value); return false;' />
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <div class="subsection">
-            <div class="submenu">
-                <h2>Gain/Loss calculator</h2>
-            </div>
-            <div class="calcMain">
-                <form name="calcProfit"
-                    onSubmit='window.document.calcProfit.calcGL.value =
-                              calcGainLoss(window.document.calcProfit.calcIn.value,
-                                           window.document.calcProfit.calcOut.value,
-                                           window.document.calcProfit.calcQty.value,
-                                           window.document.calcProfit.calcComm.value); return false'>
-                    <div class="calcDesc">In</div>
-                    <div class="calcField">
-                        <input STYLE="font-size:12px;height:14px;" NAME="calcIn" TYPE="text" SIZE="8" maxlength="20" />
-                    </div>
-                    <div class="calcDesc">Out</div>
-                    <div class="calcField">
-                        <input STYLE="font-size:12px;height:14px;" NAME="calcOut" TYPE="text" SIZE="8" maxlength="20" />
-                    </div>
-                    <div class="calcDesc">Shares</div>
-                    <div class="calcField">
-                        <input STYLE="font-size:12px;height:14px;" NAME="calcQty" TYPE="text" SIZE="8" maxlength="20" />
-                    </div>
-                    <div class="calcDesc">Commission</div>
-                    <div class="calcField">
-                        <input STYLE="font-size:12px;height:14px;" NAME="calcComm" TYPE="text" SIZE="8" maxlength="20" />
-                    </div>
-                    <div class="calcDesc"><b>Gain / Loss</b></div>
-                    <div class="calcField">
-                        <input STYLE="font-size:12px;height:14px;" NAME="calcGL" TYPE="text" SIZE="8" maxlength="20" />
-                    </div>
-                    <div class="padding_top">
-                        <input type="submit" value="  OK  "
-                         onClick='window.document.calcProfit.calcGL.value =
-                                   calcGainLoss(window.document.calcProfit.calcIn.value,
-                                                window.document.calcProfit.calcOut.value,
-                                                window.document.calcProfit.calcQty.value,
-                                                window.document.calcProfit.calcComm.value); return false' />
-                    </div>
-                </form>
-            </div>
-        </div>
-        -->
-    
+  
     </div>
     <div id="chart">
         <img id="chartImage" src="blank.gif" alt="" />
+    </div>
+    <div class="yahooChart" background-color:white>
+        <a href="#" id="yahooLink" target=_blank><img id="yahooImage" src="blank.gif" alt="" style="background-color:white"/></a>
     </div>
 </div>
 </body>
