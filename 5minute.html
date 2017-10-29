@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <title>5-minute</title>
+	<link rel="shortcut icon" href="favicon.ico">
+    <link rel=stylesheet href="myss.css" type="text/css" />
+
+<script type="text/javascript">
+
+var baseUrl = "http://bigcharts.marketwatch.com/kaavio.Webhost/charts/big.chart?ma=1&maval=20,50&lf=268435456&lf2=2&type=4&size=3&state=11&style=340&freq=6&time=2&mocktick=1&uf=0&symb=";
+
+function setCookie(cname, cvalue) {
+    var d = new Date();
+    d.setTime(d.getTime() + (100*24*60*60*1000));
+    var expires = "expires="+ d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+function submitCharts(sym1, sym2, sym3, sym4)
+{
+    window.document.form.symbol1.value = sym1.toUpperCase();
+    window.document.form.symbol2.value = sym2.toUpperCase();
+    window.document.form.symbol3.value = sym3.toUpperCase();
+    window.document.form.symbol4.value = sym4.toUpperCase();
+
+    setCookie("symbol1", window.document.form.symbol1.value);
+    setCookie("symbol2", window.document.form.symbol2.value);
+    setCookie("symbol3", window.document.form.symbol3.value);
+    setCookie("symbol4", window.document.form.symbol4.value);
+
+    changeImage(document.getElementById('image1'), baseUrl + sym1);
+    changeImage(document.getElementById('image2'), baseUrl + sym2);
+    changeImage(document.getElementById('image3'), baseUrl + sym3);
+    changeImage(document.getElementById('image4'), baseUrl + sym4);
+}
+
+function changeImage(domImg, url)
+{
+    var img = new Image();
+    img.onload = function()
+    {
+        // Load completed
+        domImg.src = url;
+    };
+    img.src = url;
+}
+
+
+function clearField(field)
+{
+    field.value = '';
+}
+
+function resetValues()
+{
+    window.document.form.symbol1.value = getCookie("symbol1");
+    window.document.form.symbol2.value = getCookie("symbol2");
+    window.document.form.symbol3.value = getCookie("symbol3");
+    window.document.form.symbol4.value = getCookie("symbol4");
+
+    submitCharts(window.document.form.symbol1.value,
+                 window.document.form.symbol2.value,
+                 window.document.form.symbol3.value,
+                 window.document.form.symbol4.value);
+}
+
+function selectAll(obj)
+{
+    obj.setSelectionRange(0, 9999);
+}
+
+</script>
+
+<style>
+
+    input {
+        margin: 5px;
+        margin-left: 15px;
+    }
+
+    img {
+        margin: 5px;
+    }
+
+    .input_div {
+        margin-left: 40px;
+        margin-top: 10px;
+    }
+
+    .images {
+        margin-top: 0px;
+        margin-left: 50px
+    }
+
+</style>
+
+
+</head>
+
+<body onLoad='return resetValues();'>
+
+<div>
+    <form name="form" onSubmit='return false;'>
+
+        <div class="input_div">
+            <input NAME="symbol1" TYPE="text" SIZE="10" maxlength="15" onClick='selectAll(this);' />
+            <input NAME="symbol2" TYPE="text" SIZE="10" maxlength="15" onClick='selectAll(this);' />
+            <input NAME="symbol3" TYPE="text" SIZE="10" maxlength="15" onClick='selectAll(this);' />
+            <input NAME="symbol4" TYPE="text" SIZE="10" maxlength="15" onClick='selectAll(this);' />
+
+            <input type="submit" value="Submit"
+                    onClick='submitCharts(window.document.form.symbol1.value,
+                                          window.document.form.symbol2.value,
+                                          window.document.form.symbol3.value,
+                                          window.document.form.symbol4.value);' />
+
+            <input type="submit" value="↺" onClick='window.location.reload(true);' />
+
+        </div>
+    </form>
+
+    <div class="images">
+        <img id="image1" src="blank.gif" alt="" />
+        <img id="image2" src="blank.gif" alt="" />
+        <img id="image3" src="blank.gif" alt="" />
+        <img id="image4" src="blank.gif" alt="" />
+    </div>

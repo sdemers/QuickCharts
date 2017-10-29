@@ -18,20 +18,19 @@ var noUpperIndicator = 0;
 var intradayImageBase = "http://bigcharts.marketwatch.com/kaavio.Webhost/charts/big.chart?type=256&size=1&style=340&freq=9&time=1&ma=1&maval=400&symb=";
 
 var chartDictionary = {};
-chartDictionary['min15'] = "http://bigcharts.marketwatch.com/kaavio.Webhost/charts/big.chart?ma=1&maval=5,50&lf=268435456&lf2=4&lf3=2&type=4&size=4&state=11&style=340&freq=7&time=18&mocktick=1&symb=";
-chartDictionary['min5'] = "http://bigcharts.marketwatch.com/kaavio.Webhost/charts/big.chart?ma=1&maval=200&lf=268435456&lf2=4&lf3=2&type=4&size=4&state=11&style=340&freq=6&time=18&mocktick=1&symb=";
-chartDictionary['daily_1y'] = "http://bigcharts.marketwatch.com/kaavio.Webhost/charts/big.chart?ma=1&maval=5,50&lf=268435456&lf2=4&lf3=2&type=4&size=4&state=11&style=340&freq=1&time=8&mocktick=1&symb=";
-chartDictionary['daily_6mo'] = "http://bigcharts.marketwatch.com/kaavio.Webhost/charts/big.chart?ma=1&maval=5,50&lf=268435456&lf2=4&lf3=2&type=4&size=4&state=11&style=340&freq=1&time=7&mocktick=1&symb=";
-chartDictionary['weekly_3y'] = "http://bigcharts.marketwatch.com/kaavio.Webhost/charts/big.chart?ma=1&maval=5,50&lf=268435456&lf2=4&lf3=2&type=4&size=4&state=11&style=340&freq=2&time=9&mocktick=1&symb=";
-chartDictionary['green_line'] = "http://bigcharts.marketwatch.com/kaavio.Webhost/charts/big.chart?nosettings=1&type=4&size=4&style=340&freq=1&time=7&ma=1&maval=250&lf=32&lf2=268435456&lf3=0&mocktick=1&symb=";
+chartDictionary['min15'] = "http://bigcharts.marketwatch.com/kaavio.Webhost/charts/big.chart?ma=1&maval=5,50&lf=268435456&lf2=4&lf3=8&type=4&size=4&state=11&style=340&freq=7&time=18&mocktick=1&symb=";
+chartDictionary['min5'] = "http://bigcharts.marketwatch.com/kaavio.Webhost/charts/big.chart?ma=1&maval=200&lf=268435456&lf2=4&lf3=8&type=4&size=4&state=11&style=340&freq=6&time=18&mocktick=1&symb=";
+chartDictionary['daily_1y'] = "http://bigcharts.marketwatch.com/kaavio.Webhost/charts/big.chart?ma=1&maval=5,50&lf=268435456&lf2=4&lf3=8&type=4&size=4&state=11&style=340&freq=1&time=8&mocktick=1&symb=";
+chartDictionary['daily_6mo'] = "http://bigcharts.marketwatch.com/kaavio.Webhost/charts/big.chart?ma=1&maval=5,50&lf=268435456&lf2=4&lf3=8&type=4&size=4&state=11&style=340&freq=1&time=7&mocktick=1&symb=";
+chartDictionary['weekly_3y'] = "http://bigcharts.marketwatch.com/kaavio.Webhost/charts/big.chart?ma=1&maval=5,50&lf=268435456&lf2=4&lf3=8&type=4&size=4&state=11&style=340&freq=2&time=9&mocktick=1&symb=";
+chartDictionary['green_line'] = "http://bigcharts.marketwatch.com/kaavio.Webhost/charts/big.chart?nosettings=1&type=4&size=4&style=340&freq=1&time=7&ma=1&maval=250&lf=32&lf2=268435456&lf3=8&mocktick=1&symb=";
 
-var globChartStyle = "&lf=268435456&lf2=4&lf3=2&type=4&size=4&state=11&style=340";
+var globChartStyle = "&lf=268435456&lf2=4&lf3=8&type=4&size=4&state=11&style=340";
 var lastSymbol = "SPX";
 var lastCountry = "";
 
-var goldSid = "12067146";
-var goldSymbol = "GCQ7"
-var goldYahoo = "GCQ17.CMX";
+var goldSymbol = "GCZ7"
+var goldYahoo = "GCZ17.CMX";
 
 function resetValues()
 {
@@ -55,7 +54,7 @@ function submitChart(symbolTSX, symbolUS, period, timeframe, MA, mastyle)
 function submitPredefined(timeframe)
 {
 	var upperValue = volumeByPriceValue;
-	
+
 	if (timeframe == 'green_line')
 	{
 		upperValue += bollingerValue;
@@ -74,11 +73,11 @@ function changeYahoo(symbol)
 		yahooSymbol = yahooSymbol.replace('ca:', '');
 		yahooSymbol += '.to';
 	}
-    
+
     //var yahooImage = "https://chart.finance.yahoo.com/t?s=" + yahooSymbol + "&lang=en-CA&region=CA&width=220&height=200";
     //var yahooImage = "http://bigcharts.marketwatch.com/kaavio.Webhost/charts/big.chart?type=64&size=1&style=340&freq=9&time=1&ma=1&maval=400&symb=" + symbol;
     var yahooImage = intradayImageBase + symbol;
-    
+
 	changeImage(document.getElementById('yahooImage'), yahooImage);
 
 	var URL = 'http://finance.yahoo.com/quote/' + yahooSymbol;
@@ -158,7 +157,7 @@ function submitBigChartsUS(symbol, szPeriod, szTimeFrame, szMA, mastyle)
 
     if (symbol == "GOLD SPOT")
     {
-        ticker = "symb=gold&sid=" + goldSid;
+        ticker = "symb=" + goldSymbol;
     }
     else if (symbol == "SILVER SPOT")
     {
@@ -199,7 +198,7 @@ function writeChart(url)
     }
 
 	var lowerSymbol = symbol.toLowerCase();
-	
+
 	var mapping = [
 		{ bc:"dxy", yh:"DX-Y.NYB" },
 		{ bc:"hui", yh:"^hui" },
@@ -218,11 +217,11 @@ function writeChart(url)
     { bc:"eurusd", yh:"EUR=X"},
 		{ bc:"crb", yh:"DBC"},
 		{ bc:"djt", yh:"^DJT"},
-		{ bc:"copper", yh:"^SPGSIC"},		
+		{ bc:"copper", yh:"^SPGSIC"},
 	]
-	
+
 	var yahooSymbol = lowerSymbol;
-	
+
 	for (var i = 0; i < mapping.length; i += 1)
 	{
 		if (mapping[i].bc == lowerSymbol)
@@ -231,11 +230,11 @@ function writeChart(url)
 			break;
 		}
 	}
-    
+
 	//var yahooUrl = "https://chart.finance.yahoo.com/t?s=" + yahooSymbol + "&lang=en-CA&region=CA&width=220&height=200";
     //var yahooUrl = "http://bigcharts.marketwatch.com/kaavio.Webhost/charts/big.chart?type=64&size=1&style=340&freq=9&time=1&ma=1&maval=400&symb=" + lastCountry + lastSymbol;
     var yahooUrl = intradayImageBase + lastCountry + lastSymbol;
-	
+
 	if (lowerSymbol == 'dxy')
 	{
 		yahooUrl = "http://www.chartseeker.com/images/USDX-24HR-SM.png";
@@ -261,8 +260,8 @@ function writeChart(url)
 		yahooUrl = "http://www.kitconet.com/charts/metals/platinum/t24_pt_en_usoz_2.gif";
 	}
 
-  changeImage(document.getElementById('yahooImage'), yahooUrl);
-	
+    changeImage(document.getElementById('yahooImage'), yahooUrl);
+
 	var URL = 'http://finance.yahoo.com/quote/' + yahooSymbol;
 	document.getElementById('yahooLink').href = URL;
 }
@@ -326,6 +325,16 @@ function adjustTimeframe(newPeriod, currentTimeframe)
     return currentTimeframe;
 }
 
+var k = 0;
+
+function flip() {
+    var j = document.getElementById("chartImage");
+    k += 180;
+    j.style.transform = "rotatex(" + k + "deg)";
+    j.style.transitionDuration = "0.5s"
+
+}
+
 </script>
 
 </head>
@@ -361,8 +370,8 @@ function adjustTimeframe(newPeriod, currentTimeframe)
 
                     <script type="text/javascript">
                      var symbolList = 'BBD.B,AC,AGF.B,AIM,ARG,AZ,BCB,BKX,BTE,BTO,CET,CIA,CFW,CGT,CMMC,CRH,DDC,DGC,DRT,DOL,ECS,EFR,ELD,ERF,ESP,EXN,FM,FR,FVI,G,GIB.A,' +
-                                      'GSC,GZM.UN,HBM,HED,HVI,HVU,HSU,HQU,HNU,HOU,HXU,HMMJ,IFP,IMG,ISPTX,IVN,K,MOGO,MX,NCU,' +
-                                      'NSU,OTEX,PAAS,PHX.UN,PLI,PTM,RUS,RNW,S,SW,SCC,TCW,TECK.B,TET,UR,WEED,WIN,WJA,XGD,XRE,YGR,ZJG,ZLU';
+                                      'GSC,GZM.UN,HBM,HED,HVI,HVU,HSU,HQU,HNU,HOU,HXU,HMMJ,IFP,IMG,ISPTX,IVN,K,MEG,MPVD,MOGO,MX,NCU,' +
+                                      'NSU,OTEX,PAAS,PHX,PLI,PTM,RUS,RNW,S,SW,TCW,TECK.B,TET,UR,WEED,WPK,WJA,XGD,XRE,YGR,ZJG,ZLU';
                         generateSel(symbolList);
                     </script>
                 </select>
@@ -393,11 +402,12 @@ function adjustTimeframe(newPeriod, currentTimeframe)
                           clearField(window.document.form.symbolTSE);'>
 
                     <script type="text/javascript">
-                        var symbolList = 'SPX,COMP,$INDU,SPY,DXY,USDCAD,USDJPY,EURUSD,IWM,HUI,CRUDE OIL,COPPER,GOLD SPOT,SILVER SPOT,NAT GAS,' +
-                                         'BTCUSD,GLD,NUGT,DUST,JNUG,JDST,PALLADIUM,PLATINUM,USO,' +
-                                         'UNG,UGAZ,BRZU,CRB,DJT,AAPL,ABC,ALX,AMD,AMZN,CARA,CSCO,CHK,DXPE,' +
-                                         'EBAY,EROS,FCX,GOOG,GST,INTC,XBI,LABD,LABU,TLRD,MCD,MSFT,NTES,SOX,SOXL,' +
-                                         'NVDA,REN,SPXL,SPXS,TSLA,URA,URRE,UVXY,SVXY,VIX,WMT,YHOO';
+                        var symbolList = 'SPX,COMP,$INDU,SPY,DJT,DXY,USDCAD,USDJPY,EURUSD,IWM,HUI,CRUDE OIL,COPPER,GOLD SPOT,SILVER SPOT,NAT GAS,' +
+                                         'BTCUSD,GLD,NUGT,DUST,JNUG,JDST,SGG,WEAT,JO,PALLADIUM,PLATINUM,USO,' +
+                                         'UNG,UGAZ,CRB,AAPL,ABC,AGEN,ALX,AMD,AMZN,CARA,CSCO,CHK,CO,DXPE,' +
+                                         'EBAY,EROS,EWZ,FCX,GOOG,GST,INTC,XBI,TLRD,MCD,MSFT,NTES,SOX,SOXL,SQ,' +
+                                         'NVDA,REN,SPXL,TSLA,URA,UVXY,SVXY,VIX,XLB,XLE,XLF,XLI,XLK,XLP,XLV,XLRE,XLU,XLY,XOP,WMT,YHOO,' +
+                                         'TDOC,CONN,COOL,RCII,VHC,BLDP,CAMT,ON,SPWH,SORL,PIRS,SGMO';
                         generateSel(symbolList);
                     </script>
                 </select>
@@ -476,7 +486,7 @@ function adjustTimeframe(newPeriod, currentTimeframe)
                                         window.document.form.period.value,
                                         window.document.form.timeframe.value,
                                         window.document.form.ma.value,
-                                        window.document.form.mastyle.value);' />		
+                                        window.document.form.mastyle.value);' />
 			<p>
 				<input type="submit" value="6M" onClick='submitPredefined("daily_6mo");' />
 				<input type="submit" value="1Y" onClick='submitPredefined("daily_1y");' />
@@ -489,13 +499,20 @@ function adjustTimeframe(newPeriod, currentTimeframe)
 
         <div class="links">
             <h1><a href="summary.html" target="_blank">Market summary</a></h1>
+            <h1><a href="5minute.html" target="_blank">5-Minute</a></h1>
+            <h1><a href="multichart.html" target="_blank">Multi-Charts</a></h1>
             <h1><a href="https://www.tradingview.com/chart/" target="_blank">Trading View</a></h1>
             <h1><a href="http://www.bigcharts.com" target="_blank">Bigcharts</a></h1>
-            <h1><a href="http://www.stockcharts.com" target="_blank">Stockcharts</a></h1>
+            <h1><a href="http://stockcharts.com/h-sc/ui?s=GDX&p=D&yr=0&mn=9&dy=0&id=p43428611305" target="_blank">Stockcharts</a></h1>
             <h1><a href="http://ca.finance.yahoo.com" target="_blank">Yahoo!</a></h1>
             <h1><a href="https://finance.yahoo.com/portfolio/mfap_6f3dc2cd6b454b9f83dc7aa9dea2d0d5/view/v1?bypass=true" target="_blank">Watchlist</a></h1>
+            <h1><a href="https://www.barchart.com/futures/heat-map" target="_blank">Futures</a></h1>
         </div>
-  
+
+        <div class="links">
+            <input type="submit" value="Flip" onclick="flip()" />
+        </div>
+
     </div>
     <div id="chart">
         <img id="chartImage" src="blank.gif" alt="" />
