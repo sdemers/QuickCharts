@@ -4,28 +4,34 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <title>MultiCharts</title>
-	<link rel="shortcut icon" href="favicon.ico">
+    <link rel="shortcut icon" href="favicon.ico">
 
     <style>
         body {background-color:whitesmoke;}
-        .p_chart { padding-bottom:5px; }
+        .p_chart
+        {
+            margin:0px;
+            padding-bottom:5px;
+        }
 
         .div_chart
         {
-            left: 220px
+            padding-top:0px;
+            padding-left:300px;
         }
 
         .floatingdiv
         {
             position:fixed;
             width:200px;
-            height:100px;
             top:10px;
             left:10px;
             padding:16px;
             background:#FFFFFF;
             z-index:100;
         }
+
+        .button { margin: 3px; }
 
     </style>
 
@@ -41,48 +47,99 @@ var US='UNG,CRB,AAPL,ABC,AGEN,ALX,AMD,AMZN,CARA,CSCO,CHK,CO,DXPE,EBAY,EROS,EWZ,F
 
 var chartBase = "http://bigcharts.marketwatch.com/kaavio.Webhost/charts/big.chart?ma=1&maval=5,50,200&lf=268435456&type=4&size=4&state=11&style=340&freq=1&time=8&mocktick=1&symb=";
 
-function setCookie(cname, cvalue) {
-    var d = new Date();
-    d.setTime(d.getTime() + (100*24*60*60*1000));
-    var expires = "expires="+ d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+function setCookie(name,value,days)
+{
+    var expires = "";
+    if (days)
+    {
+		var date = new Date();
+		date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+		var expires = "; expires=" + date.toGMTString();
+    }
+    document.cookie = name + "=" + value + expires + "; path=/";
 }
 
-function getCookie(cname) {
+function getCookie(cname)
+{
     var name = cname + "=";
     var decodedCookie = decodeURIComponent(document.cookie);
     var ca = decodedCookie.split(';');
-    for(var i = 0; i <ca.length; i++) {
+    for (var i = 0; i <ca.length; i++)
+    {
         var c = ca[i];
-        while (c.charAt(0) == ' ') {
+        while (c.charAt(0) == ' ')
+        {
             c = c.substring(1);
         }
-        if (c.indexOf(name) == 0) {
+
+        if (c.indexOf(name) == 0)
+        {
             return c.substring(name.length, c.length);
         }
     }
     return "";
 }
 
+function cleanupChartsSymbols(symbols)
+{
+    var chartsSymbols = symbols.replace(/[,\s\t\n;]+/g, ",");
+    chartsSymbols = chartsSymbols.replace(/^,/, "");
+    chartsSymbols = chartsSymbols.replace(/,$/, "");
+    return chartsSymbols.toUpperCase();
+}
+
 // Beautify the custom symbols string and set the cookie for custom charts
 function setCustomCharts(charts)
 {
-    var chartsSymbols = charts.replace(/[,\s\t\n;:]+/g, ",");
-    chartsSymbols = chartsSymbols.replace(/^,/, "");
-    chartsSymbols = chartsSymbols.replace(/,$/, "");
+    var chartsSymbols = cleanupChartsSymbols(charts);
     setCookie("symbols", chartsSymbols);
+    return chartsSymbols;
+}
+
+function setSavedCharts(charts)
+{
+    var chartsSymbols = cleanupChartsSymbols(charts);
+    setCookie("savedSymbols", chartsSymbols);
     return chartsSymbols;
 }
 
 function writeCharts(charts)
 {
-    getDiv('charts').innerHTML = ""
+    var div = getDiv('charts');
+    div.innerHTML = "";
     var symbols = charts.split(",");
+    var code = "";
     for (var i = 0; i < symbols.length; i++)
     {
-        getDiv('charts').innerHTML += '<p class="p_chart">';
-        getDiv('charts').innerHTML += '<img src="' + chartBase + symbols[i] + '"' +' />';
+        var symbol = symbols[i];
+        code += '<p class="p_chart"><img src="' + chartBase + symbol + '"' +' />';
+        code += '<input type="submit" value="+" onClick="addSavedChart(\'' + symbols[i] + '\');" />';
+        code += '<input type="submit" value="-" onClick="removeSavedChart(\'' + symbols[i] + '\');" />';
+        code += '</p>';
     }
+
+    div.innerHTML += code;
+}
+
+function addSavedChart(symbol)
+{
+    var charts = window.document.savedSymbolsForm.symbols.value;
+    charts += "," + symbol;
+    charts = cleanupChartsSymbols(charts);
+    window.document.savedSymbolsForm.symbols.value = charts;
+    setSavedCharts(charts);
+}
+
+function removeSavedChart(symbol)
+{
+    var charts = getCookie("savedSymbols")
+    charts = charts.replace(symbol, "");
+    charts = charts.replace("," + symbol + ",", "");
+    charts = charts.replace(symbol + ",", "");
+    charts = charts.replace("," + symbol, "");
+    charts = cleanupChartsSymbols(charts);
+    window.document.savedSymbolsForm.symbols.value = charts;
+    setSavedCharts(charts);
 }
 
 function getDiv(name)
@@ -106,32 +163,53 @@ function restoreCustomSymbols()
 
 function showCustomCharts()
 {
-    writeCharts(setCustomCharts(window.document.symbolsForm.symbols.value));
+    var symbols = setCustomCharts(window.document.symbolsForm.symbols.value);
+    window.document.symbolsForm.symbols.value = symbols;
+
+    writeCharts(symbols);
+}
+
+function showSavedCharts()
+{
+    writeCharts(setSavedCharts(window.document.savedSymbolsForm.symbols.value));
+}
+
+function restoreSavedSymbols()
+{
+    window.document.savedSymbolsForm.symbols.value = getCookie("savedSymbols");
 }
 
 </script>
 
 </head>
 
-<body onLoad='writeCharts(Indices); window.document.symbolsForm.symbols.value = getCookie("symbols");'>
-    <div class='floatingdiv'>
-        <p>
-            <input type="submit" value="Semis" onClick='writeCharts(Semis);' />
-            <input type="submit" value="Oil" onClick='writeCharts(Oil);' />
-            <input type="submit" value="OilCad" onClick='writeCharts(OilCad);' />
-            <input type="submit" value="Cad" onClick='writeCharts(Cad);' />
-            <input type="submit" value="US" onClick='writeCharts(US);' />
-            <input type="submit" value="FX" onClick='writeCharts(FX);' />
-            <input type="submit" value="↺" onClick='window.location.reload(true);' />
-        </p>
-        <p>
-            <form name="symbolsForm" onSubmit='return false;'>
-                <input name="symbols" type="text" onChange='showCustomCharts(); restoreCustomSymbols();' />
-                <br />
-                <input type="submit" value="Submit" onClick='showCustomCharts(); restoreCustomSymbols();' />
-            </form>
-        </p>
-    </div>
-    <div id="charts" class='div_chart'></div>
+<body onLoad='writeCharts(Indices); restoreCustomSymbols(); restoreSavedSymbols();'>
+<div class='floatingdiv'>
+    <p>
+        <input type="submit" class="button" value="Semis" onClick='writeCharts(Semis);' />
+        <input type="submit" class="button" value="Oil" onClick='writeCharts(Oil);' />
+        <input type="submit" class="button" value="OilCad" onClick='writeCharts(OilCad);' />
+        <input type="submit" class="button" value="Cad" onClick='writeCharts(Cad);' />
+        <input type="submit" class="button" value="US" onClick='writeCharts(US);' />
+        <input type="submit" class="button" value="FX" onClick='writeCharts(FX);' />
+        <input type="submit" class="button" value="↺" onClick='window.location.reload(true);' />
+    </p>
+    <p>
+        <form name="symbolsForm" onSubmit='return false;'>
+            <input name="symbols" type="text" onChange='showCustomCharts();' />
+            <br />
+            <input type="submit" style="margin-top:3px;" value="Submit" onClick='showCustomCharts();' />
+        </form>
+    </p>
+
+    <p>
+        <form name="savedSymbolsForm" onSubmit='return false;'>
+            <input name="symbols" type="text" readonly/>
+            <br />
+            <input type="submit" style="margin-top:3px;" value="Submit" onClick='showSavedCharts();' />
+        </form>
+    </p>
+</div>
+<div id="charts" class='div_chart'></div>
 </body>
 </html>
