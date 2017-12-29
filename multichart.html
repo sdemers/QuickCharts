@@ -8,16 +8,24 @@
 
     <style>
         body {background-color:whitesmoke;}
-        .p_chart
+
+        .img_chart
         {
-            margin:0px;
+            margin: 0;
             padding-bottom:5px;
+        }
+
+        .button_chart
+        {
+            float: left;
+            margin: 0 10px 0 0;
+            padding: 5px 10px;
         }
 
         .div_chart
         {
-            padding-top:0px;
-            padding-left:300px;
+            padding-top: 0;
+            padding-left: 300px;
         }
 
         .floatingdiv
@@ -31,7 +39,11 @@
             z-index:100;
         }
 
-        .button { margin: 3px; }
+        .button_menu
+        {
+            margin: 3px;
+            padding: 5px 10px;
+        }
 
     </style>
 
@@ -45,18 +57,19 @@ var FX='USDJPY,USDCAD,EURUSD,DXY,BTCUSD';
 var Cad='ca:BBD.B,ca:AC,ca:AGF.B,ca:AIM,ca:ARG,ca:AZ,ca:BCB,ca:bldp,ca:BTO,ca:CET,ca:CIA,ca:CGT,ca:CMMC,ca:CRH,ca:DGC,ca:DRT,ca:DOL,ca:ECS,ca:EFR,ca:ELD,ca:ERF,ca:ESP,ca:EXN,ca:FM,ca:FR,ca:FVI,ca:G,ca:GIB.A,ca:GSC,ca:GZM.UN,ca:HBM,ca:HED,ca:HVI,ca:HVU,ca:HSU,ca:HQU,ca:HNU,ca:HOU,ca:HXU,ca:HMMJ,ca:IFP,ca:IMG,ca:ISPTX,ca:IVN,ca:K,ca:MEG,ca:MPVD,ca:MOGO,ca:MX,ca:NCU,ca:NSU,ca:OTEX,ca:PAAS,ca:PHX,ca:PLI,ca:PTM,ca:RUS,ca:RNW,ca:S,ca:SW,ca:TCW,ca:TECK.B,ca:TET,ca:UR,ca:WEED,ca:WPK,ca:WJA,ca:XGD,ca:XRE,ca:YGR,ca:ZJG,ca:ZLU';
 var US='UNG,CRB,AAPL,ABC,AGEN,ALX,AMD,AMZN,CARA,CSCO,CHK,CO,DXPE,EBAY,EROS,EWZ,FCX,GOOG,GST,INTC,XBI,TLRD,MCD,MSFT,NTES,SOX,SOXL,SQ,NVDA,REN,SPXL,TSLA,URA,VIX,XLB,XLE,XLF,XLI,XLK,XLP,XLV,XLRE,XLU,XLY,XOP,WMT,TDOC,CONN,COOL,RCII,VHC,CAMT,SPWH,SORL,PIRS,SGMO';
 
+var anchors = [];
+var currentAnchor = 0;
+
 var chartBase = "http://bigcharts.marketwatch.com/kaavio.Webhost/charts/big.chart?ma=1&maval=5,50,200&lf=268435456&type=4&size=4&state=11&style=340&freq=1&time=8&mocktick=1&symb=";
 
-function setCookie(name,value,days)
-{
-    var expires = "";
-    if (days)
-    {
+function setCookie(name,value,days) {
+	if (days) {
 		var date = new Date();
-		date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-		var expires = "; expires=" + date.toGMTString();
-    }
-    document.cookie = name + "=" + value + expires + "; path=/";
+		date.setTime(date.getTime()+(days*24*60*60*1000));
+		var expires = "; expires="+date.toGMTString();
+	}
+	else var expires = "";
+	document.cookie = name+"="+value+expires+"; path=/";
 }
 
 function getCookie(cname)
@@ -109,12 +122,19 @@ function writeCharts(charts)
     div.innerHTML = "";
     var symbols = charts.split(",");
     var code = "";
+    anchors = [];
+    currentAnchor = 0;
+
     for (var i = 0; i < symbols.length; i++)
     {
         var symbol = symbols[i];
-        code += '<p class="p_chart"><img src="' + chartBase + symbol + '"' +' />';
-        code += '<input type="submit" value="+" onClick="addSavedChart(\'' + symbols[i] + '\');" />';
-        code += '<input type="submit" value="-" onClick="removeSavedChart(\'' + symbols[i] + '\');" />';
+
+        code += '<p><input class="button_chart" type="submit" value="+" onClick="addSavedChart(\'' + symbol + '\');" />';
+        code += '<input class="button_chart" type="submit" value="-" onClick="removeSavedChart(\'' + symbol + '\');" />';
+
+        anchors.push(symbol);
+        var URL = 'http://finance.yahoo.com/quote/' + symbol + '/profile?p=' + symbol;
+        code += '<a id="' + symbol + '" href="' + URL + '" target=_blank><img class="img_chart" src="' + chartBase + symbol + '"' +' /></a>';
         code += '</p>';
     }
 
@@ -179,6 +199,37 @@ function restoreSavedSymbols()
     window.document.savedSymbolsForm.symbols.value = getCookie("savedSymbols");
 }
 
+window.addEventListener("keydown", function (event) {
+  if (event.defaultPrevented) {
+    return; // Do nothing if the event was already processed
+  }
+
+  switch (event.key)
+  {
+    case "ArrowLeft":
+      if (currentAnchor - 1 > -1)
+      {
+        currentAnchor--;
+        document.getElementById(anchors[currentAnchor]).scrollIntoView();
+      }
+      break;
+
+    case "ArrowRight":
+      if (currentAnchor + 1 < anchors.length)
+      {
+        currentAnchor++;
+        document.getElementById(anchors[currentAnchor]).scrollIntoView();
+      }
+      break;
+
+    default:
+      return; // Quit when this doesn't handle the key event.
+  }
+
+  // Cancel the default action to avoid it being handled twice
+  event.preventDefault();
+}, true);
+
 </script>
 
 </head>
@@ -186,13 +237,13 @@ function restoreSavedSymbols()
 <body onLoad='writeCharts(Indices); restoreCustomSymbols(); restoreSavedSymbols();'>
 <div class='floatingdiv'>
     <p>
-        <input type="submit" class="button" value="Semis" onClick='writeCharts(Semis);' />
-        <input type="submit" class="button" value="Oil" onClick='writeCharts(Oil);' />
-        <input type="submit" class="button" value="OilCad" onClick='writeCharts(OilCad);' />
-        <input type="submit" class="button" value="Cad" onClick='writeCharts(Cad);' />
-        <input type="submit" class="button" value="US" onClick='writeCharts(US);' />
-        <input type="submit" class="button" value="FX" onClick='writeCharts(FX);' />
-        <input type="submit" class="button" value="↺" onClick='window.location.reload(true);' />
+        <input type="submit" class="button_menu" value="Semis" onClick='writeCharts(Semis);' />
+        <input type="submit" class="button_menu" value="Oil" onClick='writeCharts(Oil);' />
+        <input type="submit" class="button_menu" value="OilCad" onClick='writeCharts(OilCad);' />
+        <input type="submit" class="button_menu" value="Cad" onClick='writeCharts(Cad);' />
+        <input type="submit" class="button_menu" value="US" onClick='writeCharts(US);' />
+        <input type="submit" class="button_menu" value="FX" onClick='writeCharts(FX);' />
+        <input type="submit" class="button_menu" value="↺" onClick='window.location.reload(true);' />
     </p>
     <p>
         <form name="symbolsForm" onSubmit='return false;'>

@@ -29,14 +29,12 @@ var globChartStyle = "&lf=268435456&lf2=4&lf3=8&type=4&size=4&state=11&style=340
 var lastSymbol = "SPX";
 var lastCountry = "";
 
-var goldSymbol = "GCZ7"
-var goldYahoo = "GCZ17.CMX";
+var goldSymbol = "GCG8"
+var goldYahoo = "GCG8.CMX";
 
 function resetValues()
 {
     window.document.form.ma.value              = "5,50";
-    //window.document.calcShares.calcComm.value = "10";
-    //window.document.calcProfit.calcComm.value = "10";
 }
 
 function submitChart(symbolTSX, symbolUS, period, timeframe, MA, mastyle)
@@ -80,7 +78,7 @@ function changeYahoo(symbol)
 
 	changeImage(document.getElementById('yahooImage'), yahooImage);
 
-	var URL = 'http://finance.yahoo.com/quote/' + yahooSymbol;
+	var URL = 'http://finance.yahoo.com/quote/' + yahooSymbol + '/profile?p=' + yahooSymbol;
 	document.getElementById('yahooLink').href = URL;
 }
 
@@ -262,7 +260,7 @@ function writeChart(url)
 
     changeImage(document.getElementById('yahooImage'), yahooUrl);
 
-	var URL = 'http://finance.yahoo.com/quote/' + yahooSymbol;
+	var URL = 'http://finance.yahoo.com/quote/' + yahooSymbol + '/profile?p=' + yahooSymbol;
 	document.getElementById('yahooLink').href = URL;
 }
 
@@ -503,15 +501,15 @@ function flip() {
             <h1><a href="multichart.html" target="_blank">Multi-Charts</a></h1>
             <h1><a href="https://www.tradingview.com/chart/" target="_blank">Trading View</a></h1>
             <h1><a href="http://www.bigcharts.com" target="_blank">Bigcharts</a></h1>
-            <h1><a href="http://stockcharts.com/h-sc/ui?s=GDX&p=D&yr=0&mn=9&dy=0&id=p43428611305" target="_blank">Stockcharts</a></h1>
+            <h1><a href="http://stockcharts.com/h-sc/ui?s=GDX&p=D&yr=0&mn=9&dy=0&id=p57218227008" target="_blank">Stockcharts</a></h1>
             <h1><a href="http://ca.finance.yahoo.com" target="_blank">Yahoo!</a></h1>
             <h1><a href="https://finance.yahoo.com/portfolio/mfap_6f3dc2cd6b454b9f83dc7aa9dea2d0d5/view/v1?bypass=true" target="_blank">Watchlist</a></h1>
             <h1><a href="https://www.barchart.com/futures/heat-map" target="_blank">Futures</a></h1>
         </div>
 
-        <div class="links">
+        <!-- <div class="links">
             <input type="submit" value="Flip" onclick="flip()" />
-        </div>
+        </div> -->
 
     </div>
     <div id="chart">
